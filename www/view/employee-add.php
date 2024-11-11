@@ -235,6 +235,9 @@ $userId = ($session->get('user_data')['id']);
     $('#employee_form').submit(function(e) {
         e.preventDefault();
         if (this.checkValidity()) {
+            if (!$('#birthday').val()) {
+                return;
+            }
             var file = $('#imageFile')[0].files[0]; // Assuming you are selecting the file input by ID
             var form = $('#employee_form')[0]; // Assuming you are selecting the form by ID
             var formData = new FormData(form);
