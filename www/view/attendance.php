@@ -276,7 +276,11 @@ $project_id = $session->get('project_id');
                         loadAttendance();
                         $('#modal_add').modal('hide');
                     } else {
-                        Swal.fire("Warning", data.message, "warning");
+                        Swal.fire({
+                            title: "Warning",
+                            text: data.message,
+                            icon: "warning",
+                        })
                     }
                 },
                 "json"
