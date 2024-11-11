@@ -209,12 +209,10 @@ $userId = ($session->get('user_data')['id']);
     "use strict";
     (function() {
         flatpickr("#birthday", {
-            altInput: true,
             altFormat: "F j, Y",
             dateFormat: "Y-m-d",
         });
         flatpickr("#member_since", {
-            altInput: true,
             altFormat: "F j, Y",
             dateFormat: "Y-m-d",
         });
