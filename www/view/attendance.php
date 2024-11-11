@@ -276,7 +276,7 @@ $project_id = $session->get('project_id');
                         loadAttendance();
                         $('#modal_add').modal('hide');
                     } else {
-                        swal("Warning", data.message, "warning");
+                        Swal.fire("Warning", data.message, "warning");
                     }
                 },
                 "json"
