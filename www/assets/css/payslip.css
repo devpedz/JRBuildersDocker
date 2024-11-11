@@ -1,0 +1,93 @@
+body {
+    font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    text-align: center;
+    color: #777;
+}
+
+.header{
+
+}
+body h2 {
+    font-weight: 300;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    color: #000;
+}
+
+body p {
+    font-weight: 300;
+    margin-top: 5px;
+    font-style: italic;
+    color: #555;
+}
+
+.payslip-box {
+    max-width: 800px;
+    margin: auto;
+    padding: 30px;
+    border: 2px dotted rgba(103, 103, 103, 0.187);
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); */
+    font-size: 16px;
+    line-height: 24px;
+    font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    color: #555;
+}
+
+.payslip-box table {
+    width: 100%;
+    line-height: inherit;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+.payslip-box table td {
+    padding: 5px;
+    vertical-align: top;
+}
+
+.payslip-box table tr td:nth-child(2) {
+    text-align: right;
+}
+
+.payslip-box table tr.header table td {
+    padding-bottom: 0px;
+}
+
+.payslip-box table tr.header table td.title {
+    font-size: 35px;
+    line-height: 35px;
+    color: #333;
+}
+
+.payslip-box table tr.employee-details table td {
+    padding-bottom: 5px;
+}
+
+.payslip-box table tr.heading td {
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+
+.payslip-box table tr.item td {
+    border-bottom: 1px solid #eee;
+}
+
+.payslip-box table tr.item.last td {
+    border-bottom: none;
+}
+
+.payslip-box table tr.total td:nth-child(2) {
+    border-top: 2px solid #eee;
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 600px) {
+
+    .payslip-box table tr.header table td,
+    .payslip-box table tr.employee-details table td {
+        width: 100%;
+        display: block;
+        text-align: center;
+    }
+}
