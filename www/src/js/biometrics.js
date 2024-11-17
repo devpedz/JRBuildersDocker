@@ -386,6 +386,7 @@ function storeSample(sample) {
     var middle_finger = '';
     var data = (JSON.stringify({ id, index_finger, middle_finger }));
     let payload = `data=${data}`;
+    Swal.close();
 
     setTimeout(() => {
         api.post('/src/core/verify.php', payload)
