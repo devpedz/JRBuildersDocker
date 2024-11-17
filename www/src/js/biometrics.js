@@ -401,6 +401,8 @@ function storeSample(sample) {
                                     title: "Warning",
                                     text: 'The total working hours for today are less than 8 hours. Please ensure you meet the required 8-hour work duration.',
                                     icon: "warning",
+                                    timer: 3500,
+                                    timerProgressBar: true,
                                 })
                                 return;
                             }
