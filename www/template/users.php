@@ -57,11 +57,15 @@ $endPage = min($startPage + $limit - 1, $totalPages);
                 <th scope="col">Username</th>
                 <th scope="col">Role</th>
                 <th scope="col">Status</th>
+                <th scope="col">Project</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($data as $row):
+                $db->query("SELECT * FROM tbl_project WHERE id = ?");
+                $db->bind(1, $row['project_id']);
+                $project = $db->single()['project_title'];
             ?>
                 <tr>
                     <td>
@@ -75,6 +79,9 @@ $endPage = min($startPage + $limit - 1, $totalPages);
                     </td>
                     <td>
                         <?= $row['status']; ?>
+                    </td>
+                    <td>
+                        <?= $project; ?>
                     </td>
                     <td>
                         <button class="btn btn-square rounded btn-sm btn-secondary" title="Update User Details" onclick="updateUser(<?= $row['id'] ?>)"><i class="fa fa-pencil"></i></button>
