@@ -130,7 +130,7 @@
         z-index: 99;
         width: 400px;
         position: absolute;
-        bottom: 60px;
+        bottom: 100px;
         /* Adjust this value to control the vertical position */
         left: 20px;
         /* Adjust this value to control the horizontal position */
