@@ -406,6 +406,7 @@
     <script>
         var employee_modal_timeout;
         var employee_error_modal_timeout;
+
         $('#employee_modal').on('shown.bs.modal', function() {
             $('.fixed-video').fadeOut();
             clearTimeout(employee_modal_timeout);
@@ -487,7 +488,6 @@
                 });
             });
         }, 200 + Math.E * 10);
-
     </script>
     <!-- Plugin used-->
 </body>

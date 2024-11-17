@@ -1,50 +1,27 @@
 <?php
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(0);
 global $db;
 global $session;
 $username = ($session->get('user_data')['username']);
 $userId = ($session->get('user_data')['id']);
 $userRole = ($session->get('user_data')['role']);
 $project_id = $session->get('project_id');
-// $towns = !empty($user['town']) ? $user['town'] : 'SAN ANTONIO,SAN NARCISO,SAN FELIPE,CABANGAN,BOTOLAN,IBA,PALAUIG,MASINLOC,CANDELARIA,SANTA CRUZ';
-// error_reporting(0);
-// Step 1: Connect to the database
-
-// Using PDO
-// Step 3: Set the number of records per page and current page
 $recordsPerPage = 10;
-// echo $_POST['page'];
-
-if (empty($_POST)) {
-    // exit();
-}
 $currentpage = isset($_POST['page']) ? $_POST['page'] : 1;
 $name = isset($_REQUEST['name']) ? ($_REQUEST['name']) : null;
-
 $name_param = !empty($name) ? "&name=$name" : null;
 $like = "(full_name LIKE '%$name%' AND project_id = $project_id)";
 if ($userRole == 'Superadmin') {
     $like = "(full_name LIKE '%$name%')";
 }
 $currentpage = intval($currentpage);
-
 $db->query("SELECT COUNT(*) as count FROM view_cash_advance WHERE $like");
 $row = $db->single();
 $totalRecords = $row['count'];
-
-
-// Step 4: Calculate necessary variables
 $offset = ($currentpage - 1) * $recordsPerPage;
 $totalPages = ceil($totalRecords / $recordsPerPage);
-$limit = 5; // Number of pagination buttons to display
-
-// Step 5: Retrieve the paginated data
+$limit = 5;
 $db->query("SELECT * FROM view_cash_advance WHERE $like ORDER BY `status` DESC, `date` ASC, full_name ASC LIMIT $offset, $recordsPerPage");
 $data = $db->set();
-
-// Step 7: Create the pagination links
 $startPage = max(1, $currentpage - floor($limit / 2));
 $endPage = min($startPage + $limit - 1, $totalPages);
 

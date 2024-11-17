@@ -139,6 +139,7 @@ $data = $db->set();
             <div class="col-9 text-end">
                 <h1><?= strtoupper($project_title) ?> EXPENSES</h1>
                 <p><?= $project_address ?><br><span>Period: <?= $range_date ?></span></p>
+                <p>Printed Date: <?= date('F j, Y') ?></p>
             </div>
         </div>
         <table>
@@ -162,7 +163,7 @@ $data = $db->set();
                     $total_amount += $row['amount'];
                 ?>
                     <tr>
-                    <td><?= ($curdate === $row['date'] ? '' : date('F j, Y', strtotime($row['date']))) ?></td>
+                        <td><?= ($curdate === $row['date'] ? '' : date('F j, Y', strtotime($row['date']))) ?></td>
                         <td><?= $row['description'] ?></td>
                         <td><?= $row['receipt_invoice'] ?></td>
                         <td><?= $category_name ?></td>

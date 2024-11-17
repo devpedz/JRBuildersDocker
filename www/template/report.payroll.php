@@ -139,6 +139,7 @@ $data = $db->set();
                 <h1>PAYROLL</h1>
                 <p>Pay Date: <?= $payroll_date->format('F d, Y'); ?><br><span>Period: Week
                         <?= $weekNumber ?></span></p>
+                <p>Printed Date: <?= date('F j, Y') ?></p>
             </div>
         </div>
         <table>
@@ -188,16 +189,22 @@ $data = $db->set();
             </tbody>
         </table>
         <div class="row mt-5 mb-0">
-            <div class="col-12">
-                <div class="col-6 text-center">
-                    ______________________________
-                </div>
-
+            <div class="col-6 text-center">
+                ______________________________
             </div>
             <div class="col-6 text-center">
-                <small>Employer's Name and Signature</small>
+                ______________________________
             </div>
         </div>
+        <div class="row">
+            <div class="col-6 text-center">
+                <small>Prepared By:</small>
+            </div>
+            <div class="col-6 text-center">
+                <small>Approved By:</small>
+            </div>
+        </div>
+
     </div>
     <script>
         document.getElementById('date').innerText = new Date().toLocaleDateString();

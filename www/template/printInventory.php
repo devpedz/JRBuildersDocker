@@ -1,36 +1,19 @@
 <?php
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(0);
 global $db;
 global $session;
 $project_id = $session->get('project_id');
 $username = ($session->get('user_data')['username']);
 $userId = ($session->get('user_data')['id']);
 $userRole = ($session->get('user_data')['role']);
-// $towns = !empty($user['town']) ? $user['town'] : 'SAN ANTONIO,SAN NARCISO,SAN FELIPE,CABANGAN,BOTOLAN,IBA,PALAUIG,MASINLOC,CANDELARIA,SANTA CRUZ';
-// error_reporting(0);
-// Step 1: Connect to the database
-
-// Using PDO
-// Step 3: Set the number of records per page and current page
 $recordsPerPage = 10;
-// echo $_POST['page'];
-
-if (empty($_POST)) {
-    // exit();
-}
 $search = $_POST['search'] ?? null;
 $type_id = $_POST['sType'] ?? null;
 $availability = $_POST['availability'] ?? null;
 $date_acquired = $_POST['sDate'] ?? null;
-
-// $name_param = !empty($search) ? "&name=$search" : null;
 $like = "((item_no LIKE '%$search%' OR item_name LIKE '%$search%')) AND date_acquired LIKE '%$date_acquired%' AND availability LIKE '%$availability%'";
 if (!empty($type_id)) {
     $like .= " AND type_id = $type_id";
 }
-
 $db->query("SELECT * FROM tbl_inventory WHERE $like ORDER BY `date_acquired` ASC");
 $data = $db->set();
 
@@ -152,6 +135,7 @@ $data = $db->set();
             </div>
             <div class="col-9 text-end">
                 <h1>Inventory</h1>
+                <p>Printed Date: <?= date('F j, Y') ?></p>
 
             </div>
         </div>
@@ -177,7 +161,7 @@ $data = $db->set();
                         <td><?= $row['item_no'] ?></td>
                         <td><?= $row['item_name'] ?></td>
                         <td>
-                            Unit Cost: <?= number_format($row['unit_cost'], 2) ?><br>
+                            Unit Cost: ₱<?= number_format($row['unit_cost'], 2) ?><br>
                             Equipment Type: <?= $type_name ?><br>
                             ID/Plate No.: <?= $row['id_plate_no'] ?><br>
                             Description: <?= $row['description'] ?><br>

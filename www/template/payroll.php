@@ -1,7 +1,4 @@
 <?php
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(0);
 global $db;
 global $session;
 $userRole = ($session->get('user_data')['role']);
@@ -21,19 +18,7 @@ $db->query("SELECT DISTINCT(employee_id) FROM view_attendance WHERE `DATE` >= '$
 $employee_ids = $db->set();
 $employee_ids = array_column($employee_ids, 'employee_id');
 $employee_id_list = implode(', ', $employee_ids);
-
-// $towns = !empty($user['town']) ? $user['town'] : 'SAN ANTONIO,SAN NARCISO,SAN FELIPE,CABANGAN,BOTOLAN,IBA,PALAUIG,MASINLOC,CANDELARIA,SANTA CRUZ';
-// error_reporting(0);
-// Step 1: Connect to the database
-
-// Using PDO
-// Step 3: Set the number of records per page and current page
 $recordsPerPage = 10;
-// echo $_POST['page'];
-
-if (empty($_POST)) {
-    // exit();
-}
 if ($employee_ids) {
     $currentpage = isset($_POST['page']) ? $_POST['page'] : 1;
     $name = isset($_REQUEST['name']) ? ($_REQUEST['name']) : null;
@@ -41,27 +26,16 @@ if ($employee_ids) {
     $name_param = !empty($name) ? "&name=$name" : null;
 
     $currentpage = intval($currentpage);
-    // Step 2: Retrieve the total number of records
-    // if (!empty($name)) {
-    //     $like = "(full_name LIKE '%$name%')";
-    // }
     $like = "(id IN ($employee_id_list) AND project_id = $project_id)";
 
     $db->query("SELECT COUNT(*) as count FROM view_employee WHERE $like");
     $row = $db->single();
     $totalRecords = $row['count'];
-
-
-    // Step 4: Calculate necessary variables
     $offset = ($currentpage - 1) * $recordsPerPage;
     $totalPages = ceil($totalRecords / $recordsPerPage);
     $limit = 0; // Number of pagination buttons to display
-
-    // Step 5: Retrieve the paginated data
     $db->query("SELECT * FROM view_employee WHERE $like ORDER BY full_name ASC");
     $data = $db->set();
-
-    // Step 7: Create the pagination links
     $startPage = max(1, $currentpage - floor($limit / 2));
     $endPage = min($startPage + $limit - 1, $totalPages);
 } else {

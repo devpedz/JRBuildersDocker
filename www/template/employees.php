@@ -1,25 +1,11 @@
 <?php
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(0);
 global $db;
 global $session;
 $project_id = $session->get('project_id');
 $username = ($session->get('user_data')['username']);
 $userId = ($session->get('user_data')['id']);
 $userRole = ($session->get('user_data')['role']);
-// $towns = !empty($user['town']) ? $user['town'] : 'SAN ANTONIO,SAN NARCISO,SAN FELIPE,CABANGAN,BOTOLAN,IBA,PALAUIG,MASINLOC,CANDELARIA,SANTA CRUZ';
-// error_reporting(0);
-// Step 1: Connect to the database
-
-// Using PDO
-// Step 3: Set the number of records per page and current page
 $recordsPerPage = 10;
-// echo $_POST['page'];
-
-if (empty($_POST)) {
-    // exit();
-}
 $currentpage = isset($_POST['page']) ? $_POST['page'] : 1;
 $name = isset($_REQUEST['name']) ? ($_REQUEST['name']) : null;
 
@@ -33,18 +19,11 @@ $currentpage = intval($currentpage);
 $db->query("SELECT COUNT(*) as count FROM view_employee WHERE $like");
 $row = $db->single();
 $totalRecords = $row['count'];
-
-
-// Step 4: Calculate necessary variables
 $offset = ($currentpage - 1) * $recordsPerPage;
 $totalPages = ceil($totalRecords / $recordsPerPage);
 $limit = 5; // Number of pagination buttons to display
-
-// Step 5: Retrieve the paginated data
 $db->query("SELECT * FROM view_employee WHERE $like LIMIT $offset, $recordsPerPage");
 $data = $db->set();
-
-// Step 7: Create the pagination links
 $startPage = max(1, $currentpage - floor($limit / 2));
 $endPage = min($startPage + $limit - 1, $totalPages);
 
@@ -84,6 +63,9 @@ $endPage = min($startPage + $limit - 1, $totalPages);
                 <th scope="col">Rate/Day</th>
                 <th scope="col">Member Since</th>
                 <th scope="col">Status</th>
+                <?php if ($userRole == 'Superadmin'): ?>
+                    <th>Project</th>
+                <?php endif; ?>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -101,7 +83,13 @@ $endPage = min($startPage + $limit - 1, $totalPages);
                     <td> <span
                             class="badge badge-<?= $row['status'] == 'ACTIVE' ? 'success' : 'danger' ?>"><?= $row['status'] ?></span>
                     </td>
-
+                    <?php if ($userRole == 'Superadmin'):
+                        $db->query("SELECT * FROM tbl_project WHERE id = ?");
+                        $db->bind(1, $row['project_id']);
+                        $project_title = $db->single()['project_title'] ?? '-';
+                    ?>
+                        <td><?= $project_title ?></td>
+                    <?php endif; ?>
                     <td>
                         <ul class="action">
                             <?php if (!empty($row['indexfinger']) || !empty($row['middlefinger'])): ?>

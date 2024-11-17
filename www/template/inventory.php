@@ -1,32 +1,16 @@
 <?php
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(0);
 global $db;
 global $session;
 $project_id = $session->get('project_id');
 $username = ($session->get('user_data')['username']);
 $userId = ($session->get('user_data')['id']);
 $userRole = ($session->get('user_data')['role']);
-// $towns = !empty($user['town']) ? $user['town'] : 'SAN ANTONIO,SAN NARCISO,SAN FELIPE,CABANGAN,BOTOLAN,IBA,PALAUIG,MASINLOC,CANDELARIA,SANTA CRUZ';
-// error_reporting(0);
-// Step 1: Connect to the database
-
-// Using PDO
-// Step 3: Set the number of records per page and current page
 $recordsPerPage = 10;
-// echo $_POST['page'];
-
-if (empty($_POST)) {
-    // exit();
-}
 $currentpage = isset($_POST['page']) ? $_POST['page'] : 1;
 $search = isset($_REQUEST['search']) ? ($_REQUEST['search']) : null;
 $date_acquired = isset($_REQUEST['date_acquired']) ? ($_REQUEST['date_acquired']) : null;
 $availability = isset($_REQUEST['availability']) ? ($_REQUEST['availability']) : null;
 $type_id = isset($_REQUEST['type_id']) ? ($_REQUEST['type_id']) : null;
-
-// $name_param = !empty($search) ? "&name=$search" : null;
 $like = "((item_no LIKE '%$search%' OR item_name LIKE '%$search%')) AND date_acquired LIKE '%$date_acquired%' AND availability LIKE '%$availability%'";
 if (!empty($type_id)) {
     $like .= " AND type_id = $type_id";
@@ -38,16 +22,12 @@ $row = $db->single();
 $totalRecords = $row['count'];
 
 
-// Step 4: Calculate necessary variables
 $offset = ($currentpage - 1) * $recordsPerPage;
 $totalPages = ceil($totalRecords / $recordsPerPage);
 $limit = 5; // Number of pagination buttons to display
-
-// Step 5: Retrieve the paginated data
 $db->query("SELECT * FROM tbl_inventory WHERE $like ORDER BY `date_acquired` ASC LIMIT $offset, $recordsPerPage");
 $data = $db->set();
 
-// Step 7: Create the pagination links
 $startPage = max(1, $currentpage - floor($limit / 2));
 $endPage = min($startPage + $limit - 1, $totalPages);
 

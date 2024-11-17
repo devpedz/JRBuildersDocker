@@ -26,23 +26,23 @@ $router->setNamespace('\App\Controllers');
 
 $router->before('GET|POST', '/.*', function () use ($router) {
     global $session;
-    $excludedRoutes = ['/biometrics', '/getProject', '/updateProject', '/deleteProject', '/addProject','/setAttendance'];
+    $excludedRoutes = ['/biometrics', '/getProject', '/setAttendance'];
     $userRole = $session->get('user_data')['role'] ?? '';
 
     if (in_array($router->getCurrentUri(), $excludedRoutes)) {
         return;
     }
- 
+
     if (!$session->get('authenticated')) {
         if ($router->getCurrentUri() != '/login') {
             header("location: /login");
         }
     } else {
-        if (!$session->get('project') && $userRole != 'Superadmin') {
-            if ($router->getCurrentUri() != '/projects') {
-                header("location: /projects");
-            }
-        }
+        // if (!$session->get('project') && $userRole != 'Superadmin') {
+        //     if ($router->getCurrentUri() != '/projects') {
+        //         header("location: /projects");
+        //     }
+        // }
     }
 });
 

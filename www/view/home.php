@@ -59,9 +59,8 @@ $projectTotal = $projectCompleted + $projectInprogress;
                                     <div class="flex-grow-1">
                                         <h2><?= number_format($total_employee, 0) ?></h2>
                                         <p class="mb-0 text-truncate"> Employees</p>
-                                        <div class="d-flex">
-                                            <span class="f-w-500 font-success">Present - <?= $present ?></span>&nbsp;<span class="f-w-500 font-danger">Absent - <?= $absent ?></span>
-                                        </div>
+                                        <span class="f-w-500 font-success">Present - <?= $present ?></span><br>
+                                        <span class="f-w-500 font-danger">Absent - <?= $absent ?></span>
                                     </div>
                                     <div class="flex-shrink-0"><img src="../assets/images/dashboard-4/icon/employee.png" alt=""></div>
                                 </div>
@@ -75,9 +74,8 @@ $projectTotal = $projectCompleted + $projectInprogress;
                                     <div class="flex-grow-1">
                                         <h2><?= number_format($inventoryTotal, 0) ?></h2>
                                         <p class="mb-0 text-truncate"> Inventory</p>
-                                        <div class="d-flex">
-                                            <span class="f-w-500 font-success">Available - <?= $availableCount ?></span>&nbsp;<span class="f-w-500 font-danger">Unavailable - <?= $unavailableCount ?></span>
-                                        </div>
+                                        <span class="f-w-500 font-success">Available - <?= $availableCount ?></span><br>
+                                        <span class="f-w-500 font-danger">Unavailable - <?= $unavailableCount ?></span>
                                     </div>
                                     <div class="flex-shrink-0"><img src="../assets/images/dashboard-4/icon/inventory.png" alt=""></div>
                                 </div>
@@ -94,6 +92,7 @@ $projectTotal = $projectCompleted + $projectInprogress;
                                         <div class="d-flex">
                                             as of <?= date('F') ?>
                                         </div>
+                                        <br>
                                     </div>
                                     <div class="flex-shrink-0"><img src="../assets/images/dashboard-4/icon/transaction.png" alt=""></div>
                                 </div>
@@ -107,9 +106,8 @@ $projectTotal = $projectCompleted + $projectInprogress;
                                     <div class="flex-grow-1">
                                         <h2><?= number_format($projectTotal, 0) ?></h2>
                                         <p class="mb-0 text-truncate"> Projects</p>
-                                        <div class="d-flex">
-                                            <span class="f-w-500 font-success">Completed - <?= $projectCompleted ?></span>&nbsp;<span class="f-w-500 font-warning">In Progress - <?= $projectInprogress ?></span>
-                                        </div>
+                                            <span class="f-w-500 font-success">Completed - <?= $projectCompleted ?></span><br>
+                                            <span class="f-w-500 font-warning">In Progress - <?= $projectInprogress ?></span>
                                     </div>
                                     <div class="flex-shrink-0"><img src="../assets/images/dashboard-4/icon/project.png" alt=""></div>
                                 </div>

@@ -108,12 +108,20 @@ class API
         $db->query("SELECT * FROM tbl_attendance WHERE employee_id = $employee_id AND `date` = ?");
         $db->bind(1, $date);
         $checkAttendance = $db->single();
+        $workingHours = "";
         if ($checkAttendance) {
-            $db->query("UPDATE tbl_attendance SET `timeOut` = ? WHERE id = ?");
-            $db->bind(1, $time);
-            $db->bind(2, $checkAttendance['id']);
-            $db->execute();
-            $timeStatus = 'Time-Out';
+            $timeIn = new \DateTime($checkAttendance['timeIn']);
+            $interval = $date_time->diff($timeIn);
+            if ($interval->h >= 8 || ($interval->h == 7 && $interval->i > 0)) {
+                $db->query("UPDATE tbl_attendance SET `timeOut` = ? WHERE id = ?");
+                $db->bind(1, $time);
+                $db->bind(2, $checkAttendance['id']);
+                $db->execute();
+                $timeStatus = 'Time-Out';
+                $workingHours = "<br>Working Hours: $interval->h";
+            } else {
+                $response['duration_error'] = true;
+            }
         } else {
             $db->query("INSERT INTO tbl_attendance(employee_id,`date`,`year`,weekno,timeIn,project_id) VALUES (?,?,?,?,?,?)");
             $db->bind(1, $employee_id);
@@ -124,7 +132,7 @@ class API
             $db->bind(6, $project_id);
             $db->execute();
         }
-        $response['time'] = $date_time->format('h:i A');
+        $response['time'] = $date_time->format('h:i A') . $workingHours;
         $response['date'] = $date_time->format('F j, Y');
         $response['timeStatus'] = $timeStatus;
         echo json_encode($response);
@@ -1009,6 +1017,12 @@ class API
             $db->bind(4, $_POST['role']);
             $db->bind(5, 'ACTIVE');
             if ($db->execute()) {
+                if ($_POST['role'] == 'User') {
+                    $db->query("UPDATE tbl_user SET project_id = ? WHERE id = ?");
+                    $db->bind(1, $_POST['project_id']);
+                    $db->bind(2, $db->lastinsertid());
+                    $db->execute();
+                }
                 $response['success'] = true;
             }
         }
@@ -1132,6 +1146,9 @@ class API
                 'full_name' => $row['full_name'],
                 'role' => $row['role'],
             ];
+            if ($row['role'] == 'User') {
+                $session->set('project_id', $row['project_id']);
+            }
             $session->set('user_data', $userData);
             $response['success'] = true;
             $response['message'] = 'Login success';

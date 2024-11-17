@@ -1,7 +1,4 @@
 <?php
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(0);
 global $db;
 global $session;
 $project_id = $session->get('project_id');
@@ -11,7 +8,9 @@ $userRole = ($session->get('user_data')['role']);
 
 
 if ($userRole == 'Superadmin') {
-    $db->query("SELECT * FROM tbl_expenses WHERE `date` >= '$startDate' AND `date` <= '$endDate' ORDER BY `date` ASC");
+    $project_id = $_POST['project_id'] ?? null;
+    $searchProject = (!empty($_POST['project_id']) ? "project_id = $project_id AND " : null);
+    $db->query("SELECT * FROM tbl_expenses WHERE $searchProject`date` >= '$startDate' AND `date` <= '$endDate' ORDER BY `date` ASC");
 } else {
     $db->query("SELECT * FROM tbl_expenses WHERE `date` >= '$startDate' AND `date` <= '$endDate' AND project_id = $project_id ORDER BY `date` ASC");
 }

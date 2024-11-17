@@ -25,9 +25,26 @@ $userRole = ($session->get('user_data')['role']);
                             <form id="form" action="print/expense<?= ($userRole == 'Superadmin') ? 's' : '' ?>" method="POST">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label for="period">Date Range</label>
-                                        <div class="input-group flatpicker-calender">
-                                            <input class="form-control" id="range-date" name="range-date" type="date">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="range-date">Date Range </label>
+                                            <div class="input-group flatpicker-calender">
+                                                <input class="form-control" id="range-date" name="range-date" type="date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="mb-3 form-floating">
+                                            <select oninput="loadReportExpenses()" id="s_project_id" name="project_id" class="form-control">
+                                                <option value=""> All Projects </option>
+                                                <?php $db->query("SELECT * FROM tbl_project WHERE `status` = 'In Progress' ORDER BY project_title ASC");
+                                                foreach ($db->set() as $project):
+                                                ?>
+                                                    <option value="<?= $project['id'] ?>">
+                                                        <?= $project['project_title'] . " - " . $project['project_address'] ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <label class="form-label" for="project_id">Project </label>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -123,10 +140,13 @@ $userRole = ($session->get('user_data')['role']);
         const selectedDates = rangePicker.selectedDates;
         const startDate = selectedDates[0].toLocaleDateString('en-CA'); // Format as YYYY-MM-DD
         const endDate = selectedDates[1].toLocaleDateString('en-CA');
+        const project_id = $('#s_project_id').val();
+
         const formData = {
             page: page,
             start_date: startDate,
             end_date: endDate,
+            project_id: project_id
         };
         $.post("/loadReportExpenses", formData,
             function(data) {

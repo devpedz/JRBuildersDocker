@@ -1,24 +1,9 @@
 <?php
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(0);
 global $db;
 global $session;
 $project_id = $session->get('project_id');
 $userId = ($session->get('user_data')['id']);
-
-// $towns = !empty($user['town']) ? $user['town'] : 'SAN ANTONIO,SAN NARCISO,SAN FELIPE,CABANGAN,BOTOLAN,IBA,PALAUIG,MASINLOC,CANDELARIA,SANTA CRUZ';
-// error_reporting(0);
-// Step 1: Connect to the database
-
-// Using PDO
-// Step 3: Set the number of records per page and current page
 $recordsPerPage = 10;
-// echo $_POST['page'];
-
-if (empty($_POST)) {
-    // exit();
-}
 $currentpage = isset($_POST['page']) ? $_POST['page'] : 1;
 $name = isset($_REQUEST['name']) ? ($_REQUEST['name']) : null;
 
@@ -26,26 +11,16 @@ $name_param = !empty($name) ? "&name=$name" : null;
 $like = "(full_name LIKE '%$name%' AND `id` != $userId)";
 
 $currentpage = intval($currentpage);
-// Step 2: Retrieve the total number of records
-// if (!empty($name)) {
-//     $like = "(full_name LIKE '%$name%' AND `role` != 'Superadmin')";
-// }
-
 $db->query("SELECT COUNT(*) as count FROM tbl_user WHERE $like");
 $row = $db->single();
 $totalRecords = $row['count'];
 
-
-// Step 4: Calculate necessary variables
 $offset = ($currentpage - 1) * $recordsPerPage;
 $totalPages = ceil($totalRecords / $recordsPerPage);
 $limit = 5; // Number of pagination buttons to display
-
-// Step 5: Retrieve the paginated data
 $db->query("SELECT * FROM tbl_user WHERE $like ORDER BY `role` ASC, full_name ASC LIMIT $offset, $recordsPerPage");
 $data = $db->set();
 
-// Step 7: Create the pagination links
 $startPage = max(1, $currentpage - floor($limit / 2));
 $endPage = min($startPage + $limit - 1, $totalPages);
 

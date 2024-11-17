@@ -41,7 +41,7 @@ $project_id = $session->get('project_id');
                         <div class="card-body">
                             <form action="/print/inventory" method="POST">
                                 <div class="row">
-                                    <div class="col-sm-4 col-md-3">
+                                    <div class="col-sm-4 col-md-4">
                                         <div class="mb-3 form-floating">
                                             <input class="form-control" type="text" id="search" name="search" placeholder="" oninput="loadInventory()">
                                             <label class="form-label" for="search">Item No./Item Name</label>
@@ -73,22 +73,22 @@ $project_id = $session->get('project_id');
                                             <label class="form-label" for="sAvailability">Availability</label>
                                         </div>
                                     </div>
-                                    <div class="col sm-4 col-md-2">
+                                    <div class="col-sm-4 col-md-2">
                                         <div class="mb-3">
                                             <small class="form-label" for="sDate">Date</small>
                                             <div class="input-group flatpicker-calender">
                                                 <input class="form-control" id="sDate" name="sDate" type="date" placeholder="" oninput="loadInventory()">
-                                                <button class="clear-btn" id="clearBtn">X</button>
+                                                <button class="clear-btn" type="button" id="clearBtn">X</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col">
+                                    <div class="col-sm-4 col-md-2 d-flex align-items-center justify-content-end">
                                         <button type="submit" class="btn btn-secondary">Print</button>
                                     </div>
                                 </div>
+
                             </form>
                             <div id="tbl_expenses">
-
                             </div>
                         </div>
                     </div>

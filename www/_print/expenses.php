@@ -144,7 +144,13 @@ function formatDate($start_date, $end_date)
 
 <body>
     <?php
-    $db->query("SELECT * FROM tbl_project");
+    if (!empty($_POST['project_id'])) {
+        $db->query("SELECT * FROM tbl_project WHERE id = ?");
+        $db->bind(1, $_POST['project_id']);
+    } else {
+        $db->query("SELECT * FROM tbl_project");
+    }
+
     $projects = $db->set();
     $lastProject = null;
     foreach ($projects as $project):
@@ -156,6 +162,7 @@ function formatDate($start_date, $end_date)
         if (!$data) {
             break;
         }
+
     ?>
         <div class="container-fluid mt-3">
             <div class="row">
@@ -164,6 +171,7 @@ function formatDate($start_date, $end_date)
                 <div class="col-9 text-end">
                     <h1><?= strtoupper($project_title) ?> EXPENSES</h1>
                     <p><?= $project_address ?><br><span>Period: <?= formatDate($start_date, $end_date); ?></span></p>
+                    <p>Printed Date: <?= date('F j, Y') ?></p>
                 </div>
             </div>
             <table>

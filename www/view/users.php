@@ -164,13 +164,14 @@ if ($userRole != 'Superadmin') {
                             </div>
                             <div class="col-md-12">
                                 <div class="mb-3 form-floating">
-                                    <select class="form-control btn-square" name="role" required>
+                                    <select id="aRole" class="form-control btn-square" name="role" required>
                                         <option value="Superadmin">Superadmin</option>
                                         <option value="User">User</option>
                                     </select>
                                     <label class="form-label">Role</label>
                                 </div>
                             </div>
+                            <div id="project"></div>
                             <div class="col-md-12">
                                 <div class="mb-3 form-floating">
                                     <input class="form-control" type="password" name="password" placeholder="Password" required minlength="8">
@@ -229,6 +230,36 @@ if ($userRole != 'Superadmin') {
                 }, false);
             });
         }, false);
+
+
+        $('#aRole').change(function() {
+            // Check if the selected value is 'User'
+            if ($(this).val() === 'User') {
+                // If 'User' is selected, add the project dropdown dynamically
+                if ($('#project').is(':empty')) { // Only add if #project is empty
+                    var projectHtml = `
+            <div class="col-md-12">
+                <div class="mb-3 form-floating">
+                   <select name="project_id" class="form-control btn-square" required>
+                    <?php $db->query("SELECT * FROM tbl_project WHERE `status` = 'In Progress' ORDER BY project_title ASC");
+                    foreach ($db->set() as $project):
+                    ?>
+                        <option value="">--</option>
+                        <option value="<?= $project['id'] ?>">
+                            <?= $project['project_title'] . " - " . $project['project_address'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                     <label class="form-label">Project</label>
+                    </div></div>
+                `;
+                    $('#project').html(projectHtml); // Insert the project dropdown into the #project div
+                }
+            } else {
+                // If 'Superadmin' is selected, remove the project dropdown if it exists
+                $('#project').empty();
+            }
+        });
     })();
 </script>
 <script>

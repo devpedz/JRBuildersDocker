@@ -47,7 +47,7 @@ $data = $db->set(); ?>
         }
         $netpay = $grosspay - intval($cash_advance);
         $total_net_pay += $netpay;
-        ?>
+    ?>
         <div class="payslip-box">
             <table cellpadding="0" cellspacing="0">
                 <tr class="header">
@@ -61,6 +61,7 @@ $data = $db->set(); ?>
                                     <h2>PAYSLIP</h2>
                                     <p>Date: <?= $date->format('F d, Y'); ?><br><span>Period: Week <?= $weekNumber ?></span>
                                     </p>
+                                    <p>Printed Date: <?= date('F j, Y') ?></p>
                                 </td>
                             </tr>
                         </table>
@@ -86,7 +87,6 @@ $data = $db->set(); ?>
                     <td>Earnings</td>
                     <td>Amount</td>
                 </tr>
-
                 <tr class="item">
                     <td>Gross Pay</td>
                     <td><?= number_format($grosspay, 2) ?></td>
@@ -106,13 +106,24 @@ $data = $db->set(); ?>
                     </td>
                 </tr>
             </table>
+            <div class="row mt-5 mb-0">
+                <div class="col-6">
+                    ______________________________
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <small>Received By:</small>
+                </div>
+            </div>
         </div>
+
     <?php endforeach; ?>
 
 </body>
 <script>
     window.print();
-    window.onafterprint = function () {
+    window.onafterprint = function() {
         history.back()
     }
 </script>

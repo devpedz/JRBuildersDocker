@@ -126,8 +126,6 @@ if ($userRole != 'Superadmin') {
                                     <svg>
                                         <use href="../../assets/svg/icon-sprite.svg#search"></use>
                                     </svg></span></li>
-
-
                             <li>
                                 <div class="mode">
                                     <svg>
@@ -150,9 +148,6 @@ if ($userRole != 'Superadmin') {
                                     <li><a href="/biometrics"><i
                                                 class="icofont icofont-finger-print"></i><span>&nbsp;&nbsp;Biometrics</span></a>
                                     </li>
-                                    <li><a href="/change-project"><i
-                                                class="icofont icofont-exchange"></i><span>&nbsp;&nbsp;Change
-                                                Project</span></a></li>
                                     <li><a href="/logout"><i data-feather="log-out"> </i><span>Log
                                                 Out</span></a></li>
                                 </ul>
@@ -213,7 +208,7 @@ if ($userRole != 'Superadmin') {
                                     </div>
                                 </li>
 
-                                <li class="sidebar-list"><i class="fa fa-thumb-tack"> </i>
+                                <li class="sidebar-list"><!-- <i class="fa fa-thumb-tack"></i> -->
                                     <a class="sidebar-link sidebar-title link-nav" href="/home">
                                         <svg class="stroke-icon">
                                             <use href="../../assets/svg/icon-sprite.svg#stroke-home"></use>
@@ -223,13 +218,12 @@ if ($userRole != 'Superadmin') {
                                         </svg><span>Home</span></a>
                                 </li>
                                 <?php if ($userRole == 'Superadmin'): ?>
-
-                                    <li class="sidebar-list"><i class="fa fa-thumb-tack"> </i>
+                                    <li class="sidebar-list">
                                         <a class="sidebar-link sidebar-title link-nav" href="/manage-projects">
                                             <i data-feather="map" class="text-white"></i><span>Projects</span></a>
                                     </li>
                                 <?php endif; ?>
-                                <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                                <li class="sidebar-list"><a
                                         class="sidebar-link sidebar-title" href="javascript:void(0)">
                                         <i data-feather="users" class="text-white"></i><span>Employees</span></a>
                                     <ul class="sidebar-submenu">
@@ -238,11 +232,11 @@ if ($userRole != 'Superadmin') {
                                         <li><a href="/cash-advance">Cash Advance</a></li>
                                     </ul>
                                 </li>
-                                <li class="sidebar-list"><i class="fa fa-thumb-tack"> </i>
+                                <li class="sidebar-list">
                                     <a class="sidebar-link sidebar-title link-nav" href="/attendance">
                                         <i data-feather="calendar" class="text-white"></i><span>Attendance</span></a>
                                 </li>
-                                <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                                <li class="sidebar-list"><a
                                         class="sidebar-link sidebar-title" href="javascript:void(0)">
                                         <i data-feather="dollar-sign" class="text-white"></i><span>Expenses</span></a>
                                     <ul class="sidebar-submenu">
@@ -250,7 +244,7 @@ if ($userRole != 'Superadmin') {
                                         <li><a href="/expenses/category">Category</a></li>
                                     </ul>
                                 </li>
-                                <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                                <li class="sidebar-list"><a
                                         class="sidebar-link sidebar-title" href="javascript:void(0)">
                                         <i data-feather="box" class="text-white"></i><span>Inventory</span></a>
                                     <ul class="sidebar-submenu">
@@ -259,7 +253,7 @@ if ($userRole != 'Superadmin') {
                                     </ul>
                                 </li>
 
-                                <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                                <li class="sidebar-list"><a
                                         class="sidebar-link sidebar-title" href="javascript:void(0)">
                                         <i data-feather="clipboard" class="text-white"></i><span>Reports</span></a>
                                     <ul class="sidebar-submenu">
@@ -268,7 +262,7 @@ if ($userRole != 'Superadmin') {
                                     </ul>
                                 </li>
                                 <?php if ($userRole == 'Superadmin'): ?>
-                                    <li class="sidebar-list"><i class="fa fa-thumb-tack"> </i>
+                                    <li class="sidebar-list">
                                         <a class="sidebar-link sidebar-title link-nav" href="/users">
                                             <i data-feather="user" class="text-white"></i><span>Users</span></a>
                                     </li>
