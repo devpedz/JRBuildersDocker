@@ -29,10 +29,17 @@ let FingerprintSdkTest = (function () {
             showMessage("Scan Appropriate Finger on the Reader", "success");
         };
         this.sdk.onDeviceDisconnected = function (e) {
+            Swal.fire({
+                title: "Device is disconnected.",
+                text: "Please reconnect it.",
+                icon: "warning",
+                timerProgressBar: true,
+            });
             // Detects if device gets disconnected - provides deviceUid of disconnected device
             showMessage("Device is Disconnected. Please Connect Back");
         };
         this.sdk.onCommunicationFailed = function (e) {
+
             // Detects if there is a failure in communicating with U.R.U web SDK
             showMessage("Communication Failed. Please Reconnect Device")
         };
@@ -135,6 +142,13 @@ class Reader {
                 }
             }
             else {
+                Swal.fire({
+                    title: "Please Connect the Fingerprint Reader",
+                    html: "If you haven't installed the driver, <a href='https://drive.google.com/file/d/1utRSoEXC5x1XcgvD-Kno7otirXRmykyV/view' target='_blank'>download this</a>",
+                    icon: "warning",
+                    timerProgressBar: true,
+                });
+
                 showMessage("Please Connect the Fingerprint Reader");
             }
         })
