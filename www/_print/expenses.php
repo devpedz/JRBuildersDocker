@@ -4,28 +4,6 @@
 // error_reporting(0);
 global $db;
 global $session;
-// Given date range
-$range_date = $_POST['range-date'];
-// Split the range into start and end dates
-$dates = array_map('trim', explode(' to ', $range_date));
-list($start_date, $end_date) = count($dates) === 2 ? $dates : [$dates[0], $dates[0]];
-// list($start_date, $end_date) = explode(' to ', $range_date);
-
-// Optional: Convert to DateTime objects if needed
-$start_date = new DateTime($start_date);
-$end_date = new DateTime($end_date);
-$startDate =  $start_date->format('Y-m-d');
-$endDate = $end_date->format('Y-m-d');
-function formatDate($start_date, $end_date)
-{
-    if ($start_date->format('Y-m-d') === $end_date->format('Y-m-d')) {
-        return $start_date->format('F j, Y');
-    } elseif ($start_date->format('Y') === $end_date->format('Y')) {
-        return $start_date->format('F j') . " to " . $end_date->format('F j, Y');
-    } else {
-        return $start_date->format('F j, Y') . " to " . $end_date->format('F j, Y');
-    }
-}
 ?>
 
 
@@ -157,7 +135,8 @@ function formatDate($start_date, $end_date)
         $project_id = $project['id'];
         $project_title = $project['project_title'];
         $project_address = $project['project_address'];
-        $db->query("SELECT * FROM tbl_expenses WHERE `date` >= '$startDate' AND `date` <= '$endDate' AND project_id = $project_id ORDER BY `date` ASC");
+        $db->query("SELECT * FROM tbl_expenses WHERE `date` LIKE ? AND project_id = $project_id ORDER BY `date` ASC");
+        $db->bind(1, '%' . $_POST['year'] . '-' . $_POST['month'] . '%');
         $data = $db->set();
         if (!$data) {
             break;
@@ -170,7 +149,7 @@ function formatDate($start_date, $end_date)
                 </div>
                 <div class="col-9 text-end">
                     <h1><?= strtoupper($project_title) ?> EXPENSES</h1>
-                    <p><?= $project_address ?><br><span>Period: <?= formatDate($start_date, $end_date); ?></span></p>
+                    <p><?= $project_address ?><br><span>Period:</span></p>
                     <p>Printed Date: <?= date('F j, Y') ?></p>
                 </div>
             </div>
