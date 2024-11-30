@@ -2,17 +2,15 @@
 global $db;
 global $session;
 $project_id = $session->get('project_id');
-$startDate = $_POST['start_date'];
-$endDate = $_POST['end_date'];
 $userRole = ($session->get('user_data')['role']);
-
+$date = $_POST['year'] . '-' . $_POST['month'];
 
 if ($userRole == 'Superadmin') {
     $project_id = $_POST['project_id'] ?? null;
     $searchProject = (!empty($_POST['project_id']) ? "project_id = $project_id AND " : null);
-    $db->query("SELECT * FROM tbl_expenses WHERE $searchProject`date` >= '$startDate' AND `date` <= '$endDate' ORDER BY `date` ASC");
+    $db->query("SELECT * FROM tbl_expenses WHERE $searchProject`date` LIKE '%$date%' ORDER BY `date` ASC");
 } else {
-    $db->query("SELECT * FROM tbl_expenses WHERE `date` >= '$startDate' AND `date` <= '$endDate' AND project_id = $project_id ORDER BY `date` ASC");
+    $db->query("SELECT * FROM tbl_expenses WHERE `date` LIKE '%$date%' AND project_id = $project_id ORDER BY `date` ASC");
 }
 $data = $db->set();
 ?>
