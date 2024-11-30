@@ -24,12 +24,38 @@ $userRole = ($session->get('user_data')['role']);
                         <div class="header mt-3">
                             <form id="form" action="print/expense<?= ($userRole == 'Superadmin') ? 's' : '' ?>" method="POST">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label" for="range-date">Date Range </label>
-                                            <div class="input-group flatpicker-calender">
-                                                <input class="form-control" id="range-date" name="range-date" type="date">
-                                            </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3 form-floating">
+                                            <select name="month" id="month" class="form-control">
+                                                <option value=""></option>
+                                                <option value="01">January</option>
+                                                <option value="02">February</option>
+                                                <option value="03">March</option>
+                                                <option value="04">April</option>
+                                                <option value="05">May</option>
+                                                <option value="06">June</option>
+                                                <option value="07">July</option>
+                                                <option value="08">August</option>
+                                                <option value="09">September</option>
+                                                <option value="10">October</option>
+                                                <option value="11">November</option>
+                                                <option value="12">December</option>
+                                            </select>
+                                            <label class="form-label" for="month">Month </label>
+                                        </div>
+                                    </div>
+                                    <?php
+                                    $add_year = date('Y');
+                                    ?>
+                                    <div class="col-md-3">
+                                        <div class="mb-3 form-floating">
+                                            <select name="year" id="year" class="form-control">
+                                                <option value=""></option>
+                                                <?php for ($year = 2024; $year <= $add_year; $year++): ?>
+                                                    <option value="<?= $year ?>"><?= $year ?></option>
+                                                <?php endfor; ?>
+                                            </select>
+                                            <label class="form-label" for="year">Year</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-3">
@@ -65,15 +91,6 @@ $userRole = ($session->get('user_data')['role']);
                         </div>
                     </div>
                     <div class="card-body">
-                        <!-- <div class="row">
-                            <div class="col-sm-6 col-md-3">
-                                <div class="mb-3 form-floating">
-                                    <input class="form-control" type="text" id="search" name="search" placeholder=""
-                                        required="" oninput="loadEmployees()">
-                                    <label class="form-label" for="search">Search name...</label>
-                                </div>
-                            </div>
-                        </div> -->
                         <div id="tbl">
 
                         </div>
@@ -109,50 +126,75 @@ $userRole = ($session->get('user_data')['role']);
 <?php include 'footer.php'; ?>
 <script src="../assets/js/custom-btn-ripple.js"></script>
 <script>
-    var page = 1;
-    var employeeId;
-    var payrollDate;
-    var rangePicker = flatpickr("#range-date", {
-        mode: "range",
-        dateFormat: "Y-m-d", // Specify the desired date format
-        onChange: function(selectedDates, dateStr, instance) {
-            if (selectedDates.length === 2) {
+    $(document).ready(function() {
+        $('#month, #year').change(function() {
+            // Call the validation function before calling loadExpenses
+            if (validateSelection()) {
                 loadReportExpenses();
-                console.log(`Start date: ${dateStr.split(' to ')[0]}\nEnd date: ${dateStr.split(' to ')[1]}`);
+            }
+        });
+
+        // Validation function to check if both month and year are selected
+        function validateSelection() {
+            var selectedMonth = $('#month').val(); // Get the selected month
+            var selectedYear = $('#year').val(); // Get the selected year
+
+            // Check if both month and year have values selected
+            if (selectedMonth === "" || selectedYear === "") {
+                // If either month or year is not selected, show an error message
+                return false; // Validation fails
             } else {
-                // alert('No date selected.');
+                // If both values are selected, hide the error message
+                return true; // Validation passes
             }
         }
-    });
-
-    $('#form').submit(function(e) {
-        if ($('#btnPrint').attr('disabled')) {
-            e.preventDefault();
-        }
-    });
-
-    function setPage(_page) {
-        page = _page;
-        loadReportExpenses();
-    }
-
-    function loadReportExpenses() {
-        const selectedDates = rangePicker.selectedDates;
-        const startDate = selectedDates[0].toLocaleDateString('en-CA'); // Format as YYYY-MM-DD
-        const endDate = selectedDates[1].toLocaleDateString('en-CA');
-        const project_id = $('#s_project_id').val();
-
-        const formData = {
-            page: page,
-            start_date: startDate,
-            end_date: endDate,
-            project_id: project_id
-        };
-        $.post("/loadReportExpenses", formData,
-            function(data) {
-                $('#tbl').html(data);
+        var page = 1;
+        var employeeId;
+        var payrollDate;
+        var rangePicker = flatpickr("#range-date", {
+            mode: "range",
+            dateFormat: "Y-m-d", // Specify the desired date format
+            onChange: function(selectedDates, dateStr, instance) {
+                if (selectedDates.length === 2) {
+                    loadReportExpenses();
+                    console.log(`Start date: ${dateStr.split(' to ')[0]}\nEnd date: ${dateStr.split(' to ')[1]}`);
+                } else {
+                    // alert('No date selected.');
+                }
             }
-        );
-    }
-    // loadPayroll();
+        });
+
+        $('#form').submit(function(e) {
+            if ($('#btnPrint').attr('disabled')) {
+                e.preventDefault();
+            }
+        });
+
+        function setPage(_page) {
+            page = _page;
+            loadReportExpenses();
+        }
+
+        function loadReportExpenses() {
+            const selectedDates = rangePicker.selectedDates;
+            // const startDate = selectedDates[0].toLocaleDateString('en-CA'); // Format as YYYY-MM-DD
+            // const endDate = selectedDates[1].toLocaleDateString('en-CA');
+            const project_id = $('#s_project_id').val();
+            const month = $('#month').val();
+            const year = $('#year').val();
+
+            const formData = {
+                page: page,
+                month: month,
+                year: year,
+                project_id: project_id
+            };
+            $.post("/loadReportExpenses", formData,
+                function(data) {
+                    $('#tbl').html(data);
+                }
+            );
+        }
+        // loadPayroll();
+    });
 </script>
