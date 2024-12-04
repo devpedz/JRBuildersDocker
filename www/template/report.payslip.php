@@ -36,8 +36,24 @@ $data = $db->set(); ?>
     foreach ($data as $row):
         $db->query("SELECT count(*) as total FROM view_attendance WHERE `DATE` >= '$startDate' AND `DATE` <= '$endDate' AND employee_id = ?");
         $db->bind(1, $row['id']);
-        $days_worked = $db->single()['total'];
-        $grosspay = $days_worked * $row['rate_per_day'];
+        $days_worked = 0;
+        foreach ($db->set() as $attendance) {
+            $days_worked++;
+            $timeIn = !empty($attendance['timeIn']) ? DateTime::createFromFormat('H:i:s', $attendance['timeIn']) : null;
+            $timeOut = !empty($attendance['timeOut']) ? DateTime::createFromFormat('H:i:s', $attendance['timeOut']) : null;
+            if ($timeIn && $timeOut) {
+                $interval = $timeIn->diff($timeOut);
+                $working_hours = $interval->h + ($interval->days * 24);
+                $working_hoursDecimalHours = $interval->h + $interval->i / 60 + ($interval->days * 24);
+            } else {
+                $working_hours = 0;
+            }
+        }
+        if ($working_hours > 8) {
+            $grosspay = $days_worked * $row['rate_per_day'];
+        } else {
+            $grosspay = $days_worked * ($row['rate_per_day'] / 2);
+        }
         $cash_advance = '';
         $db->query("SELECT * FROM view_payments WHERE employee_id = ? and payment_date = '$endDate'");
         $db->bind(1, $row['id']);
