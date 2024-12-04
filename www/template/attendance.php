@@ -63,11 +63,25 @@ $endPage = min($startPage + $limit - 1, $totalPages);
                 <th scope="col">Name</th>
                 <th scope="col">Time In</th>
                 <th scope="col">Time Out</th>
+                <th scope="col" class="text-center">Working Hours</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($data as $row):
+                // Ensure timeIn and timeOut are not null or empty before creating DateTime objects
+                $timeIn = !empty($row['timeIn']) ? DateTime::createFromFormat('H:i:s', $row['timeIn']) : null;
+                $timeOut = !empty($row['timeOut']) ? DateTime::createFromFormat('H:i:s', $row['timeOut']) : null;
+                if ($timeIn && $timeOut) {
+                    $interval = $timeIn->diff($timeOut);
+
+                    $working_hours = $interval->h + ($interval->days * 24);
+
+                    $working_hoursDecimalHours = $interval->h + $interval->i / 60 + ($interval->days * 24);
+                } else {
+                    $working_hours = 0;
+                }
+
             ?>
                 <tr>
                     <td> <?= ($d = DateTime::createFromFormat('Y-m-d', $row['date'])) ? $d->format('F j, Y') : '-'; ?>
@@ -80,7 +94,9 @@ $endPage = min($startPage + $limit - 1, $totalPages);
                     </td>
                     <td>
                         <?= ($row['timeOut'] && $d = DateTime::createFromFormat('H:i:s', $row['timeOut'])) ? $d->format('h:i A') : '-'; ?>
-
+                    </td>
+                    <td class="text-center">
+                        <?= $working_hours ?>
                     </td>
                     <td>
                         <ul class="action">
