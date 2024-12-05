@@ -140,7 +140,7 @@ $userRole = ($session->get('user_data')['role']);
             var selectedYear = $('#year').val(); // Get the selected year
 
             // Check if both month and year have values selected
-            if (selectedMonth === "" || selectedYear === "") {
+            if (selectedYear === "") {
                 // If either month or year is not selected, show an error message
                 return false; // Validation fails
             } else {
