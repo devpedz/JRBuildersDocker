@@ -126,75 +126,70 @@ $userRole = ($session->get('user_data')['role']);
 <?php include 'footer.php'; ?>
 <script src="../assets/js/custom-btn-ripple.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#month, #year').change(function() {
-            // Call the validation function before calling loadExpenses
-            if (validateSelection()) {
-                loadReportExpenses();
-            }
-        });
-
-        // Validation function to check if both month and year are selected
-        function validateSelection() {
-            var selectedMonth = $('#month').val(); // Get the selected month
-            var selectedYear = $('#year').val(); // Get the selected year
-
-            // Check if both month and year have values selected
-            if (selectedYear === "") {
-                // If either month or year is not selected, show an error message
-                return false; // Validation fails
-            } else {
-                // If both values are selected, hide the error message
-                return true; // Validation passes
-            }
-        }
-        var page = 1;
-        var employeeId;
-        var payrollDate;
-        var rangePicker = flatpickr("#range-date", {
-            mode: "range",
-            dateFormat: "Y-m-d", // Specify the desired date format
-            onChange: function(selectedDates, dateStr, instance) {
-                if (selectedDates.length === 2) {
-                    loadReportExpenses();
-                    console.log(`Start date: ${dateStr.split(' to ')[0]}\nEnd date: ${dateStr.split(' to ')[1]}`);
-                } else {
-                    // alert('No date selected.');
-                }
-            }
-        });
-
-        $('#form').submit(function(e) {
-            if ($('#btnPrint').attr('disabled')) {
-                e.preventDefault();
-            }
-        });
-
-        function setPage(_page) {
-            page = _page;
+    $('#month, #year').change(function() {
+        // Call the validation function before calling loadExpenses
+        if (validateSelection()) {
             loadReportExpenses();
         }
-
-        function loadReportExpenses() {
-            const selectedDates = rangePicker.selectedDates;
-            // const startDate = selectedDates[0].toLocaleDateString('en-CA'); // Format as YYYY-MM-DD
-            // const endDate = selectedDates[1].toLocaleDateString('en-CA');
-            const project_id = $('#s_project_id').val();
-            const month = $('#month').val();
-            const year = $('#year').val();
-
-            const formData = {
-                page: page,
-                month: month,
-                year: year,
-                project_id: project_id
-            };
-            $.post("/loadReportExpenses", formData,
-                function(data) {
-                    $('#tbl').html(data);
-                }
-            );
-        }
-        // loadPayroll();
     });
+
+    // Validation function to check if both month and year are selected
+    function validateSelection() {
+        var selectedMonth = $('#month').val(); // Get the selected month
+        var selectedYear = $('#year').val(); // Get the selected year
+
+        // Check if both month and year have values selected
+        if (selectedYear === "") {
+            // If either month or year is not selected, show an error message
+            return false; // Validation fails
+        } else {
+            // If both values are selected, hide the error message
+            return true; // Validation passes
+        }
+    }
+    var page = 1;
+    var employeeId;
+    var payrollDate;
+    var rangePicker = flatpickr("#range-date", {
+        mode: "range",
+        dateFormat: "Y-m-d", // Specify the desired date format
+        onChange: function(selectedDates, dateStr, instance) {
+            if (selectedDates.length === 2) {
+                loadReportExpenses();
+                console.log(`Start date: ${dateStr.split(' to ')[0]}\nEnd date: ${dateStr.split(' to ')[1]}`);
+            } else {
+                // alert('No date selected.');
+            }
+        }
+    });
+
+    $('#form').submit(function(e) {
+        if ($('#btnPrint').attr('disabled')) {
+            e.preventDefault();
+        }
+    });
+
+    function setPage(_page) {
+        page = _page;
+        loadReportExpenses();
+    }
+
+    function loadReportExpenses() {
+        const project_id = $('#s_project_id').val();
+        const month = $('#month').val();
+        const year = $('#year').val();
+
+        const formData = {
+            page: page,
+            month: month,
+            year: year,
+            project_id: project_id
+        };
+        $.post("/loadReportExpenses", formData,
+            function(data) {
+                $('#tbl').html(data);
+            }
+        );
+    }
+    // loadPayroll();
 </script>
