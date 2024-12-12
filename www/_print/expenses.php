@@ -149,7 +149,7 @@ global $session;
                 </div>
                 <div class="col-9 text-end">
                     <h1><?= strtoupper($project_title) ?> EXPENSES</h1>
-                    <p><?= $project_address ?><br><span>Period:</span></p>
+                    <p><?= $project_address ?></p>
                     <p>Printed Date: <?= date('F j, Y') ?></p>
                 </div>
             </div>
