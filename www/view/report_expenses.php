@@ -58,7 +58,7 @@ $userRole = ($session->get('user_data')['role']);
                                             <label class="form-label" for="year">Year</label>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-3">
+                                    <div class="col-sm-6 col-md-3" <?= ($userRole == 'User') ? 'hidden' : '' ?>>
                                         <div class="mb-3 form-floating">
                                             <select oninput="loadReportExpenses()" id="s_project_id" name="project_id" class="form-control">
                                                 <option value=""> All Projects </option>
