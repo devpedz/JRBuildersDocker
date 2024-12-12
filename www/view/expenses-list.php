@@ -34,14 +34,14 @@ $userRole = ($session->get('user_data')['role']);
                                         <label class="form-label" for="search">Receipt/Invoice No.</label>
                                     </div>
                                 </div>
-                                <div class="col-sm-6 col-md-3">
+                                <div class="col-sm-6 col-md-3" <?= ($userRole == 'User') ? 'hidden' : '' ?>>
                                     <div class="mb-3 form-floating">
                                         <select oninput="loadExpenses()" id="s_project_id" name="s_project_id" class="form-control" required>
                                             <option value=""> All Projects </option>
                                             <?php $db->query("SELECT * FROM tbl_project WHERE `status` = 'In Progress' ORDER BY project_title ASC");
                                             foreach ($db->set() as $project):
                                             ?>
-                                                <option value="<?= $project['id'] ?>">
+                                                <option value="<?= $project['id'] ?>" <?= $disabled ?>>
                                                     <?= $project['project_title'] . " - " . $project['project_address'] ?>
                                                 </option>
                                             <?php endforeach; ?>
