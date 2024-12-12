@@ -5,24 +5,26 @@
 global $db;
 global $session;
 $project_id = $session->get('project_id');
-// Given date range
-$range_date = $_POST['range-date'];
+// // Given date range
+// $range_date = $_POST['range-date'];
 
-// Split the range into start and end dates
-list($start_date, $end_date) = explode(' to ', $range_date);
+// // Split the range into start and end dates
+// list($start_date, $end_date) = explode(' to ', $range_date);
 
-// Optional: Convert to DateTime objects if needed
-$start_date = new DateTime($start_date);
-$end_date = new DateTime($end_date);
-$startDate =  $start_date->format('Y-m-d');
-$endDate = $end_date->format('Y-m-d');
+// // Optional: Convert to DateTime objects if needed
+// $start_date = new DateTime($start_date);
+// $end_date = new DateTime($end_date);
+// $startDate =  $start_date->format('Y-m-d');
+// $endDate = $end_date->format('Y-m-d');
 
 $db->query("SELECT * FROM tbl_project WHERE id = $project_id");
 $project = $db->single();
 $project_title = $project['project_title'];
 $project_address = $project['project_address'];
 
-$db->query("SELECT * FROM tbl_expenses WHERE `date` >= '$startDate' AND `date` <= '$endDate' AND project_id = $project_id ORDER BY `date` ASC");
+$db->query("SELECT * FROM tbl_expenses WHERE `date` LIKE ? AND project_id = $project_id ORDER BY `date` ASC");
+$db->bind(1, '%' . $_POST['year'] . '-' . $_POST['month'] . '%');
+// $db->query("SELECT * FROM tbl_expenses WHERE `date` >= '$startDate' AND `date` <= '$endDate' AND project_id = $project_id ORDER BY `date` ASC");
 $data = $db->set();
 
 ?>
@@ -138,7 +140,7 @@ $data = $db->set();
             </div>
             <div class="col-9 text-end">
                 <h1><?= strtoupper($project_title) ?> EXPENSES</h1>
-                <p><?= $project_address ?><br><span>Period: <?= $range_date ?></span></p>
+                <p><?= $project_address ?></p>
                 <p>Printed Date: <?= date('F j, Y') ?></p>
             </div>
         </div>
